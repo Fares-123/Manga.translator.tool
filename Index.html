@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -10,16 +10,38 @@
     <div class="container">
       <h1>أداة ترجمة الفصول</h1>
       <form id="uploadForm">
-        <label for="chapterLink">رابط الفصل:</label>
-        <input type="text" id="chapterLink" name="chapterLink" placeholder="أدخل رابط الفصل" required>
-        <label for="folderName">اسم المجلد:</label>
-        <input type="text" id="folderName" name="folderName" placeholder="أدخل اسم المجلد" value="Default">
-        <label for="tags">الوسوم:</label>
-        <input type="text" id="tags" name="tags" placeholder="أدخل الوسوم (مفصولة بفواصل)">
+        <div class="form-group">
+          <label for="chapterLink">رابط الفصل:</label>
+          <input 
+            type="text" 
+            id="chapterLink" 
+            name="chapterLink" 
+            placeholder="أدخل رابط الفصل" 
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label for="folderName">اسم المجلد:</label>
+          <input 
+            type="text" 
+            id="folderName" 
+            name="folderName" 
+            placeholder="أدخل اسم المجلد" 
+            value="Default"
+          >
+        </div>
+        <div class="form-group">
+          <label for="tags">الوسوم:</label>
+          <input 
+            type="text" 
+            id="tags" 
+            name="tags" 
+            placeholder="أدخل الوسوم (مفصولة بفواصل)"
+          >
+        </div>
         <button type="submit">رفع الفصل وترجمته</button>
       </form>
-      <div id="responseMessage">   
-      </div>
+      <div id="responseMessage"></div>
     </div>
     <script src="/js/script.js"></script>
   </body>
