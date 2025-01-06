@@ -1,9 +1,15 @@
-# app.py
 from fastapi import FastAPI
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from pathlib import Path
+from fastapi import Request
 import httpx
 from Crypto.PublicKey import RSA
 
 app = FastAPI()
+
+# إعداد القوالب
+templates = Jinja2Templates(directory="templates")
 
 # مثال على تكوين مفتاح RSA باستخدام PyCryptodome
 @app.get("/generate-key")
@@ -20,7 +26,7 @@ async def fetch_data():
         response = await client.get("https://api.example.com")
         return response.json()
 
-# نقطة الدخول الأساسية
-@app.get("/")
-def read_root():
-    return {"message": "Hello, World"}
+# نقطة الدخول الرئيسية لعرض صفحة index.html
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
