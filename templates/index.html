@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خادم تعدين العملات الرقمية</title>
+</head>
+<body>
+    <h1>تعدين العملات الرقمية</h1>
+    <p>قوة التعدين: {{ mining_data['hashrate'] }}</p>
+    <p>المقدار المستخرج: {{ mining_data['mined'] }}</p>
+    <hr>
+    <h2>إرسال بيتكوين</h2>
+    <form action="/send" method="post">
+        <label for="amount">المبلغ (BTC): </label>
+        <input type="text" id="amount" name="amount" required>
+        <br>
+        <label for="address">عنوان المحفظة: </label>
+        <input type="text" id="address" name="address" required>
+        <br><br>
+        <button type="submit">إرسال</button>
+    </form>
+</body>
+</html>
