@@ -1,48 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة ترجمة الفصول</title>
-    <link rel="stylesheet" href="static/css/styles.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>أداة ترجمة الفصول</h1>
-      <form id="uploadForm">
-        <div class="form-group">
-          <label for="chapterLink">رابط الفصل:</label>
-          <input 
-            type="text" 
-            id="chapterLink" 
-            name="chapterLink" 
-            placeholder="أدخل رابط الفصل" 
-            required
-          >
-        </div>
-        <div class="form-group">
-          <label for="folderName">اسم المجلد:</label>
-          <input 
-            type="text" 
-            id="folderName" 
-            name="folderName" 
-            placeholder="أدخل اسم المجلد" 
-            value="Default"
-          >
-        </div>
-        <div class="form-group">
-          <label for="tags">الوسوم:</label>
-          <input 
-            type="text" 
-            id="tags" 
-            name="tags" 
-            placeholder="أدخل الوسوم (مفصولة بفواصل)"
-          >
-        </div>
-        <button type="submit">رفع الفصل وترجمته</button>
-      </form>
-      <div id="responseMessage"></div>
-    </div>
-    <script src="js/script.js"></script>
-  </body>
-</html>
+from flask import Flask, render_template, request
+import subprocess
+from mining.utils import get_mining_data, send_bitcoin
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    # جمع بيانات التعدين
+    mining_data = get_mining_data()
+
+    # عرض البيانات في صفحة HTML
+    return render_template('index.html', mining_data=mining_data)
+
+@app.route('/send', methods=['POST'])
+def send():
+    amount = request.form['amount']
+    recipient_address = request.form['address']
+    transaction = send_bitcoin(amount, recipient_address)
+    return f"تم إرسال {amount} BTC إلى {recipient_address}. رقم المعاملة: {transaction.txid}"
+
+if __name__ == '__main__':
+    app.run(debug=True)
