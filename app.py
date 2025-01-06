@@ -1,23 +1,26 @@
-from flask import Flask, render_template, request
-import subprocess
-from mining.utils import get_mining_data, send_bitcoin
+# app.py
+from fastapi import FastAPI
+import httpx
+from Crypto.PublicKey import RSA
 
-app = Flask(__name__)
+app = FastAPI()
 
-@app.route('/')
-def index():
-    # جمع بيانات التعدين
-    mining_data = get_mining_data()
+# مثال على تكوين مفتاح RSA باستخدام PyCryptodome
+@app.get("/generate-key")
+def generate_key():
+    key = RSA.generate(2048)
+    private_key = key.export_key()
+    public_key = key.publickey().export_key()
+    return {"private_key": private_key.decode(), "public_key": public_key.decode()}
 
-    # عرض البيانات في صفحة HTML
-    return render_template('index.html', mining_data=mining_data)
+# مثال على استخدام httpx لإجراء طلب خارجي
+@app.get("/fetch-data")
+async def fetch_data():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://api.example.com")
+        return response.json()
 
-@app.route('/send', methods=['POST'])
-def send():
-    amount = request.form['amount']
-    recipient_address = request.form['address']
-    transaction = send_bitcoin(amount, recipient_address)
-    return f"تم إرسال {amount} BTC إلى {recipient_address}. رقم المعاملة: {transaction.txid}"
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# نقطة الدخول الأساسية
+@app.get("/")
+def read_root():
+    return {"message": "Hello, World"}
