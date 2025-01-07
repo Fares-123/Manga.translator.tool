@@ -4,27 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mining App</title>
+    <!-- ربط ملف CSS -->
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
     <h1>Welcome to the Mining App</h1>
     <p>Use the buttons below to interact with the API.</p>
-    <button onclick="generateKey()">Generate RSA Key</button>
-    <button onclick="fetchData()">Fetch Data</button>
+    <button id="generateKeyBtn">Generate RSA Key</button>
+    <button id="fetchDataBtn">Fetch Data</button>
 
-    <script>
-        async function generateKey() {
-            const response = await fetch('/generate-key');
-            const data = await response.json();
-            console.log('Generated Keys:', data);
-            alert('RSA Key Generated! Check the console for details.');
-        }
-
-        async function fetchData() {
-            const response = await fetch('/fetch-data');
-            const data = await response.json();
-            console.log('Fetched Data:', data);
-            alert('Data Fetched! Check the console for details.');
-        }
-    </script>
+    <!-- ربط ملف JavaScript -->
+    <script src="static/js/scripts.js"></script>
 </body>
 </html>
