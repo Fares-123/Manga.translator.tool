@@ -1,0 +1,33 @@
+{
+  "api": {
+    "id": null,
+    "worker-id": ""
+  },
+  "autosave": true,
+  "background": false,
+  "colors": true,
+  "randomx": {
+    "1gb-pages": false,
+    "rdmsr": true,
+    "wrmsr": true,
+    "numa": true,
+    "scratchpad_prefetch_mode": 1
+  },
+  "cpu": {
+    "enabled": true,
+    "huge-pages": true,
+    "hw-aes": null,
+    "priority": null,
+    "asm": true,
+    "max-threads-hint": 50,
+    "pools": [
+      {
+        "url": "pool.supportxmr.com:3333",
+        "user": "YOUR_MONERO_WALLET_ADDRESS",
+        "pass": "x",
+        "keepalive": true,
+        "tls": false
+      }
+    ]
+  }
+}
