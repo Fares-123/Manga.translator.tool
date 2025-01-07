@@ -1,24 +1,30 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خادم تعدين العملات الرقمية</title>
+    <title>Mining App</title>
 </head>
 <body>
-    <h1>تعدين العملات الرقمية</h1>
-    <p>قوة التعدين: {{ mining_data['hashrate'] }}</p>
-    <p>المقدار المستخرج: {{ mining_data['mined'] }}</p>
-    <hr>
-    <h2>إرسال بيتكوين</h2>
-    <form action="/send" method="post">
-        <label for="amount">المبلغ (BTC): </label>
-        <input type="text" id="amount" name="amount" required>
-        <br>
-        <label for="address">عنوان المحفظة: </label>
-        <input type="text" id="address" name="address" required>
-        <br><br>
-        <button type="submit">إرسال</button>
-    </form>
+    <h1>Welcome to the Mining App</h1>
+    <p>Use the buttons below to interact with the API.</p>
+    <button onclick="generateKey()">Generate RSA Key</button>
+    <button onclick="fetchData()">Fetch Data</button>
+
+    <script>
+        async function generateKey() {
+            const response = await fetch('/generate-key');
+            const data = await response.json();
+            console.log('Generated Keys:', data);
+            alert('RSA Key Generated! Check the console for details.');
+        }
+
+        async function fetchData() {
+            const response = await fetch('/fetch-data');
+            const data = await response.json();
+            console.log('Fetched Data:', data);
+            alert('Data Fetched! Check the console for details.');
+        }
+    </script>
 </body>
 </html>
