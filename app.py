@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from Crypto.Hash import SHA256
 import time
-import os
+import threading
 
 app = Flask(__name__)
 
@@ -18,6 +18,15 @@ def mine_block(previous_hash):
             return {"nonce": nonce, "hash": hash_result}
         nonce += 1
 
+def start_mining():
+    """تشغيل التعدين بشكل مستمر في الخلفية"""
+    previous_hash = "00000000000000000000000000000000"  # قيمة ثابتة لبدء التعدين
+    while True:
+        start_time = time.time()
+        block = mine_block(previous_hash)
+        elapsed_time = time.time() - start_time
+        print(f"Block mined: {block}, Time taken: {elapsed_time}s")
+
 @app.route('/')
 def home():
     """المسار لعرض البيانات في الصفحة الرئيسية"""
@@ -30,6 +39,9 @@ def home():
     return render_template('index.html', block=block, time_taken=elapsed_time)
 
 if __name__ == '__main__':
-    # الحصول على المنفذ من البيئة أو استخدام 5000 كخيار افتراضي
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    # بدء التعدين في الخلفية
+    mining_thread = threading.Thread(target=start_mining, daemon=True)
+    mining_thread.start()
+
+    # تشغيل الخادم على المنفذ الافتراضي (يتم تحديده من قبل Render)
+    app.run(host='0.0.0.0', debug=True)
