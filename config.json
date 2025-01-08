@@ -1,0 +1,45 @@
+{
+  "api": {
+    "id": null,
+    "worker-id": "my-worker"
+  },
+  "autosave": true,
+  "background": false,
+  "colors": true,
+  "randomx": {
+    "1gb-pages": false,
+    "rdmsr": true,
+    "wrmsr": false,
+    "numa": true,
+    "scratchpad_prefetch_mode": 1
+  },
+  "cpu": {
+    "enabled": true,
+    "huge-pages": true,
+    "hw-aes": null,
+    "asm": true,
+    "argon2-impl": null,
+    "kawpow": false,
+    "rx": [0],
+    "cn": [],
+    "cn-lite": [],
+    "astrobwt": [],
+    "rx/arq": [],
+    "rx/0": [],
+    "cn-heavy": [],
+    "cn-pico": [],
+    "defyx": [],
+    "cn/fast": [],
+    "rx/wow": [],
+    "cn/r": []
+  },
+  "pools": [
+    {
+      "url": "pool.minexmr.com:443",
+      "user": "YOUR_WALLET_ADDRESS",
+      "pass": "x",
+      "keepalive": true,
+      "tls": true
+    }
+  ]
+}
