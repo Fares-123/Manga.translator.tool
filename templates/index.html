@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mining Dashboard</title>
-    <link rel="stylesheet" href="static/css/style.css">
-    <script defer src="static/js/script.js"></script>
+    <title>Mining App</title>
 </head>
 <body>
-    <h1>Mining Dashboard</h1>
-    <div>
-        <input type="text" id="wallet" placeholder="Enter Wallet Address" />
-        <button onclick="startMining()">Start Mining</button>
-        <button onclick="stopMining()">Stop Mining</button>
-    </div>
-    <h2>Status</h2>
-    <pre id="status">Loading...</pre>
+    <h1>Mining Server Status</h1>
+    <div id="status">Loading status...</div>
+
+    <button id="start-mining">Start Mining</button>
+    <button id="stop-mining">Stop Mining</button>
+
+    <!-- إضافة رابط لملف JavaScript -->
+    <script src="static/js/script.js"></script>
 </body>
 </html>
