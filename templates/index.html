@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monero Mining</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>Mining Dashboard</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <script defer src="static/js/script.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Monero Mining Dashboard</h1>
-        <button id="start-mining-btn">Start Mining</button>
-        <div id="status">
-            <h2>Status: <span id="mining-status">Not started</span></h2>
-        </div>
-        <div id="log"></div>
+    <h1>Mining Dashboard</h1>
+    <div>
+        <input type="text" id="wallet" placeholder="Enter Wallet Address" />
+        <button onclick="startMining()">Start Mining</button>
+        <button onclick="stopMining()">Stop Mining</button>
     </div>
+    <h2>Status</h2>
+    <pre id="status">Loading...</pre>
 </body>
 </html>
