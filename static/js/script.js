@@ -1,38 +1,22 @@
-// Event listeners for the start and stop mining buttons
-document.getElementById('start-button').addEventListener('click', function() {
-    fetch('/start-mining', {
-        method: 'POST'
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('status-message').innerText = data.message;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-document.getElementById('stop-button').addEventListener('click', function() {
-    fetch('/stop-mining', {
-        method: 'POST'
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('status-message').innerText = data.message;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-});
-
-// Load server status when the page loads
-window.addEventListener('load', function() {
+// Load server status when the page loads and update it every 5 seconds
+function fetchMiningStatus() {
     fetch('/status')
     .then(response => response.json())
     .then(data => {
-        document.getElementById('status-message').innerText = data.message;
+        if (data.message) {
+            document.getElementById('status-message').innerText = data.message;
+        } else if (data.error) {
+            document.getElementById('status-message').innerText = "Error fetching mining status.";
+        }
     })
     .catch(error => {
+        document.getElementById('status-message').innerText = "Error fetching mining status.";
         console.error('Error:', error);
     });
+}
+
+// Fetch status every 5 seconds
+window.addEventListener('load', function() {
+    fetchMiningStatus();
+    setInterval(fetchMiningStatus, 5000); // Update every 5 seconds
 });
