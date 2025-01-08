@@ -1,39 +1,55 @@
-from flask import Flask, render_template, jsonify, request
-import os
-from mining import start_xmrig, get_mining_status
+from flask import Flask, jsonify, request
+import requests
 
 app = Flask(__name__)
 
-# إعدادات التعدين الافتراضية
-WALLET_ADDRESS = "YOUR_MONERO_WALLET_ADDRESS"
-POOL_URL = "pool.supportxmr.com:3333"  # استبدل بمجمع التعدين الذي تفضله
-CPU_THREADS = 2
-process = None  # حفظ العملية التي يتم تشغيلها
+# إعداد بيانات الاتصال بـ Mining Pool API
+POOL_URL = "https://miningpool.com/api"  # قم بتغيير الرابط إلى رابط الـ API الخاص بك
+API_KEY = "YOUR_API_KEY"  # ضع مفتاح API الخاص بك هنا
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@app.route("/start-mining", methods=["GET"])
-def start_mining():
-    global process
-    if not os.path.exists("./xmrig"):
-        return jsonify({"error": "XMRig not found. Please install it."}), 500
+# وظيفة للحصول على حالة التعدين
+@app.route('/status', methods=['GET'])
+def get_mining_status():
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    response = requests.get(f"{POOL_URL}/status", headers=headers)
     
-    process = start_xmrig(WALLET_ADDRESS, POOL_URL, CPU_THREADS)
-    if isinstance(process, str):  # إذا كان هناك خطأ في بدء العملية
-        return jsonify({"error": process}), 500
-    return jsonify({"message": "Mining started"}), 200
+    if response.status_code == 200:
+        return jsonify(response.json())
+    else:
+        return jsonify({"error": "Failed to fetch mining status", "status_code": response.status_code})
 
-@app.route("/mining-status", methods=["GET"])
-def mining_status():
-    if process:
-        status = get_mining_status(process)
-        if status:
-            return jsonify({"status": status})
-        else:
-            return jsonify({"status": "Mining finished or error occurred."})
-    return jsonify({"status": "Mining process not started."})
+# وظيفة لبدء عملية التعدين مع إدخال عنوان المحفظة من الواجهة
+@app.route('/start-mining', methods=['POST'])
+def start_mining():
+    wallet_address = request.json.get("wallet")
+    if not wallet_address:
+        return jsonify({"error": "Wallet address is required"}), 400
+    
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    data = {"wallet": wallet_address}
 
-if __name__ == "__main__":
+    response = requests.post(f"{POOL_URL}/start", headers=headers, json=data)
+    
+    if response.status_code == 200:
+        return jsonify({"message": "Mining started", "details": response.json()})
+    else:
+        return jsonify({"error": "Failed to start mining", "status_code": response.status_code})
+
+# وظيفة لإيقاف التعدين
+@app.route('/stop-mining', methods=['POST'])
+def stop_mining():
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    response = requests.post(f"{POOL_URL}/stop", headers=headers)
+    
+    if response.status_code == 200:
+        return jsonify({"message": "Mining stopped"})
+    else:
+        return jsonify({"error": "Failed to stop mining", "status_code": response.status_code})
+
+# الوظيفة الرئيسية
+@app.route('/')
+def home():
+    return jsonify({"message": "Mining Server is running. Use /status, /start-mining, or /stop-mining."})
+
+if __name__ == '__main__':
     app.run(debug=True)
