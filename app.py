@@ -1,27 +1,51 @@
-from flask import Flask, jsonify, request
-import requests
+from flask import Flask, render_template, request, jsonify
+from Crypto.Hash import SHA256
+import time
 
 app = Flask(__name__)
 
-# إعداد بيانات الاتصال بـ Mining Pool API
-POOL_URL = "https://miningpool.com/api"  # قم بتغيير الرابط إلى رابط الـ API الخاص بك
-API_KEY = "YOUR_API_KEY"  # ضع مفتاح API الخاص بك هنا
+# قيمة بداية التعدين
+mining_rate = 0.01  # المبلغ المبدئي للعملة لكل عملية تعدين
+balance = 0.0  # رصيد المستخدم من العملة
+transactions = []  # سجل المعاملات
 
-# وظيفة للحصول على حالة التعدين
-@app.route('/status', methods=['GET'])
-def get_mining_status():
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    response = requests.get(f"{POOL_URL}/status", headers=headers)
-    
-    if response.status_code == 200:
-        return jsonify(response.json())
-    else:
-        return jsonify({"error": "Failed to fetch mining status", "status_code": response.status_code})
+# وظيفة تعدين
+def mine_block(data, nonce):
+    h = SHA256.new()
+    h.update((data + str(nonce)).encode('utf-8'))
+    return h.hexdigest()
 
-# الوظيفة الرئيسية
 @app.route('/')
-def home():
-    return jsonify({"message": "Mining Server is running. Use /status to check mining status."})
+def index():
+    global balance
+    return render_template('index.html', balance=balance, transactions=transactions)
+
+@app.route('/mine', methods=['POST'])
+def mine():
+    global balance
+    data = request.form['data']
+    nonce = 0
+    while True:
+        result = mine_block(data, nonce)
+        if result.startswith('0000'):  # تحقق من التحدي (4 أصفار في بداية الهاش)
+            balance += mining_rate  # إضافة قيمة التعدين
+            transactions.append(f"Successfully mined: {mining_rate} coins")
+            break
+        nonce += 1
+    return jsonify({'status': 'mining successful', 'balance': balance})
+
+@app.route('/transfer', methods=['POST'])
+def transfer():
+    global balance
+    address = request.form['address']
+    if not address:
+        return jsonify({'status': 'error', 'message': 'Please provide a wallet address'})
+    amount = float(request.form['amount'])
+    if amount > balance:
+        return jsonify({'status': 'error', 'message': 'Insufficient funds'})
+    balance -= amount
+    transactions.append(f"Transferred {amount} coins to wallet {address}")
+    return jsonify({'status': 'success', 'balance': balance, 'message': f"Transferred {amount} coins to {address}"})
 
 if __name__ == '__main__':
     app.run(debug=True)
