@@ -1,42 +1,32 @@
-async function getStatus() {
-    const response = await fetch('/status');
-    const data = await response.json();
-    document.getElementById('status').innerText = JSON.stringify(data, null, 2);
-}
-
-async function startMining() {
-    const wallet = document.getElementById('wallet').value;
-    if (!wallet) {
-        alert("Please enter a wallet address!");
-        return;
-    }
-
-    const response = await fetch('/start-mining', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ wallet: wallet })
+// جلب حالة الخادم وعرضها
+fetch('/status')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('status').innerHTML = data.message;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('status').innerHTML = 'Error loading status';
     });
-    const data = await response.json();
-    if (data.error) {
-        alert(`Error: ${data.error}`);
-    } else {
-        alert(data.message);
-    }
-    getStatus();
-}
 
-async function stopMining() {
-    const response = await fetch('/stop-mining', { method: 'POST' });
-    const data = await response.json();
-    if (data.error) {
-        alert(`Error: ${data.error}`);
-    } else {
-        alert(data.message);
-    }
-    getStatus();
-}
+// إضافة تفاعل زر Start Mining
+document.getElementById('start-mining').addEventListener('click', function() {
+    fetch('/start-mining', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => alert(data.message))
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error starting mining');
+        });
+});
 
-// استدعاء حالة التعدين عند فتح الصفحة
-getStatus();
+// إضافة تفاعل زر Stop Mining
+document.getElementById('stop-mining').addEventListener('click', function() {
+    fetch('/stop-mining', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => alert(data.message))
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error stopping mining');
+        });
+});
