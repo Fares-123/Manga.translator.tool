@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Miner</title>
-    <link rel="stylesheet" href="/static/css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحة التعدين الرئيسية</title>
+  <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Digital Miner</h1>
-        <p>Balance: <span id="balance">{{ balance }}</span> coins</p>
-        <button onclick="startMining()">Start Mining</button>
-        <h2>Transactions</h2>
-        <ul id="transactions">
-            {% for transaction in transactions %}
-                <li>{{ transaction }}</li>
-            {% endfor %}
-        </ul>
-        
-        <h2>Transfer Coins</h2>
-        <form id="transferForm">
-            <input type="text" id="address" placeholder="Wallet Address" required>
-            <input type="number" id="amount" placeholder="Amount" required>
-            <button type="submit">Transfer</button>
-        </form>
-        <div id="transferMessage"></div>
-    </div>
 
-    <script src="/static/js/script.js"></script>
+  <h1>معلومات التعدين</h1>
+
+  <div class="card">
+    <h2>قوة التعدين</h2>
+    <p class="value" id="hashrate">جارٍ التحميل...</p>
+  </div>
+
+  <div class="card">
+    <h2>المبلغ الذي تم تعيينه</h2>
+    <p class="value" id="balance">جارٍ التحميل...</p>
+  </div>
+
+  <script src="static/js/script.js"></script>
 </body>
 </html>
