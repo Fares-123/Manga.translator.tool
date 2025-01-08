@@ -36,7 +36,7 @@
   "pools": [
     {
       "url": "pool.minexmr.com:443",
-      "user": "YOUR_WALLET_ADDRESS",
+      "user": "426VdKKvKBXVN5q1tDpV83Uh6KKko8yiqBNqxD5CizJs1DWT6kELkbPZHvcqxc4fGj7BPJNQVrrbfFLne86fPMjgQ3PX1zQ",
       "pass": "x",
       "keepalive": true,
       "tls": true
