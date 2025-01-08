@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mining App</title>
-    <!-- ربط ملف CSS -->
-    <link rel="stylesheet" href="static/css/styles.css">
+    <title>Monero Mining</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
-    <h1>Welcome to the Mining App</h1>
-    <p>Use the buttons below to interact with the API.</p>
-    <button id="generateKeyBtn">Generate RSA Key</button>
-    <button id="fetchDataBtn">Fetch Data</button>
-
-    <!-- ربط ملف JavaScript -->
-    <script src="static/js/scripts.js"></script>
+    <div class="container">
+        <h1>Monero Mining Dashboard</h1>
+        <button id="start-mining-btn">Start Mining</button>
+        <div id="status">
+            <h2>Status: <span id="mining-status">Not started</span></h2>
+        </div>
+        <div id="log"></div>
+    </div>
 </body>
 </html>
