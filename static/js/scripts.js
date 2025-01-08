@@ -1,29 +1,19 @@
-// جلب العناصر من الصفحة
-const generateKeyBtn = document.getElementById("generateKeyBtn");
-const fetchDataBtn = document.getElementById("fetchDataBtn");
-
-// دالة لتوليد مفتاح RSA
-generateKeyBtn.addEventListener("click", async () => {
-    try {
-        const response = await fetch("/generate-key");
-        const data = await response.json();
-        console.log("Generated Keys:", data);
-        alert("RSA Key Generated! Check the console for details.");
-    } catch (error) {
-        console.error("Error generating key:", error);
-        alert("Error generating RSA key.");
-    }
+document.getElementById('start-mining-btn').addEventListener('click', function() {
+    fetch('/start-mining')
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === "Mining started") {
+                updateStatus();
+            }
+        });
 });
 
-// دالة لجلب البيانات
-fetchDataBtn.addEventListener("click", async () => {
-    try {
-        const response = await fetch("/fetch-data");
-        const data = await response.json();
-        console.log("Fetched Data:", data);
-        alert("Data Fetched! Check the console for details.");
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("Error fetching data.");
-    }
-});
+function updateStatus() {
+    setInterval(function() {
+        fetch('/mining-status')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('mining-status').innerText = data.status;
+            });
+    }, 5000);
+}
