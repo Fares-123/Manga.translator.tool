@@ -18,38 +18,10 @@ def get_mining_status():
     else:
         return jsonify({"error": "Failed to fetch mining status", "status_code": response.status_code})
 
-# وظيفة لبدء عملية التعدين مع إدخال عنوان المحفظة من الواجهة
-@app.route('/start-mining', methods=['POST'])
-def start_mining():
-    wallet_address = request.json.get("wallet")
-    if not wallet_address:
-        return jsonify({"error": "Wallet address is required"}), 400
-    
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    data = {"wallet": wallet_address}
-
-    response = requests.post(f"{POOL_URL}/start", headers=headers, json=data)
-    
-    if response.status_code == 200:
-        return jsonify({"message": "Mining started", "details": response.json()})
-    else:
-        return jsonify({"error": "Failed to start mining", "status_code": response.status_code})
-
-# وظيفة لإيقاف التعدين
-@app.route('/stop-mining', methods=['POST'])
-def stop_mining():
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    response = requests.post(f"{POOL_URL}/stop", headers=headers)
-    
-    if response.status_code == 200:
-        return jsonify({"message": "Mining stopped"})
-    else:
-        return jsonify({"error": "Failed to stop mining", "status_code": response.status_code})
-
 # الوظيفة الرئيسية
 @app.route('/')
 def home():
-    return jsonify({"message": "Mining Server is running. Use /status, /start-mining, or /stop-mining."})
+    return jsonify({"message": "Mining Server is running. Use /status to check mining status."})
 
 if __name__ == '__main__':
     app.run(debug=True)
