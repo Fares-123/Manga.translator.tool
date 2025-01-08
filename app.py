@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 from Crypto.Hash import SHA256
 import time
 
@@ -17,22 +17,16 @@ def mine_block(previous_hash):
             return {"nonce": nonce, "hash": hash_result}
         nonce += 1
 
-@app.route('/mine', methods=['GET'])
-def mine():
-    """المسار الذي يبدأ التعدين"""
+@app.route('/')
+def home():
+    """المسار لعرض البيانات في الصفحة الرئيسية"""
     previous_hash = "00000000000000000000000000000000"  # قيمة ثابتة لبدء التعدين
     start_time = time.time()
     block = mine_block(previous_hash)
     elapsed_time = time.time() - start_time
-    return jsonify({
-        "message": "Block mined successfully!",
-        "block": block,
-        "time_taken": f"{elapsed_time:.2f} seconds"
-    })
-
-@app.route('/')
-def home():
-    return "Welcome to the Monero Mining Server!"
+    
+    # إرسال البيانات إلى قالب HTML
+    return render_template('index.html', block=block, time_taken=elapsed_time)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
