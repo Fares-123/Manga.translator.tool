@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>صفحة التعدين الرئيسية</title>
-  <link rel="stylesheet" href="static/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة التعدين</title>
+    <link rel="stylesheet" href="static/css/styles.css">
 </head>
 <body>
-
-  <h1>معلومات التعدين</h1>
-
-  <div class="card">
-    <h2>قوة التعدين</h2>
-    <p class="value" id="hashrate">جارٍ التحميل...</p>
-  </div>
-
-  <div class="card">
-    <h2>المبلغ الذي تم تعيينه</h2>
-    <p class="value" id="balance">جارٍ التحميل...</p>
-  </div>
-
-  <script src="static/js/script.js"></script>
+    <div class="container">
+        <h1>نتائج عملية التعدين</h1>
+        <div class="block-info">
+            <p><strong>Nonce:</strong> {{ block['nonce'] }}</p>
+            <p><strong>Hash:</strong> {{ block['hash'] }}</p>
+        </div>
+        <div class="time-info">
+            <p><strong>الوقت المستغرق:</strong> {{ time_taken }} ثواني</p>
+        </div>
+    </div>
+    <link rel="stylesheet" href="static/js/script.js">
 </body>
 </html>
