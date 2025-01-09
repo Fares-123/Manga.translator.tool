@@ -10,11 +10,37 @@
 </head>
 <body>
     <h1>Mining Information</h1>
-    <p><strong>Nonce:</strong> <span id="nonce">Loading...</span></p>
-    <p><strong>Hash:</strong> <span id="hash">Loading...</span></p>
-    <p><strong>Time Taken:</strong> <span id="time_taken">Loading...</span></p>
+    
+    <!-- عرض المبالغ المعدنة -->
+    <div id="current-amount">مبلغ التعدين الحالي: 
+        <span id="current-mount-value">{{ current_mining_amount }}</span> دولار
+    </div>
+    <div id="total-amount">مجموع مبلغ التعدين: 
+        <span id="total-mount-value">{{ total_mining_amount }}</span> دولار
+    </div>
+    
+    <!-- عرض بيانات البلوك -->
+    <p><strong>Nonce:</strong> <span id="nonce">{{ block['nonce'] }}</span></p>
+    <p><strong>Hash:</strong> <span id="hash">{{ block['hash'] }}</span></p>
+    <p><strong>Time Taken:</strong> <span id="time_taken">{{ time_taken }}</span> ثواني</p>
 
     <!-- ربط ملف JavaScript -->
     <script src="static/js/script.js"></script>
+    <script>
+        // تحديث البيانات بشكل ديناميكي باستخدام jQuery
+        function updateMiningInfo() {
+            $.get("/latest-block", function(data) {
+                $("#nonce").text(data.nonce);
+                $("#hash").text(data.hash);
+                $("#time_taken").text(data.time_taken);
+                $("#current-mount-value").text(data.current_mining_amount);
+                $("#total-mount-value").text(data.total_mining_amount);
+            });
+        }
+
+        // تحديث البيانات كل 5 ثوانٍ
+        setInterval(updateMiningInfo, 5000);
+        updateMiningInfo();  // تحديث فوري عند تحميل الصفحة
+    </script>
 </body>
 </html>
