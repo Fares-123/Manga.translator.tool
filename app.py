@@ -6,7 +6,12 @@ import os
 
 app = Flask(__name__)
 
-block_data = {}
+# بيانات البلوك والمبالغ المعدنة
+block_data = {
+    'current_mining_amount': 0,  # المبلغ المعدن في الدورة الحالية
+    'total_mining_amount': 0,    # المجموع الكلي للمبالغ منذ تشغيل الخادم
+    'mining_reward': 50,         # المكافأة لكل بلوك
+}
 
 def mine_block(previous_hash):
     nonce = 0
@@ -26,15 +31,29 @@ def start_mining():
         block_data['block'] = block
         block_data['time_taken'] = elapsed_time
 
+        # تحديث المبالغ عند العثور على بلوك جديد
+        block_data['current_mining_amount'] = block_data['mining_reward']
+        block_data['total_mining_amount'] += block_data['mining_reward']
+
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', 
+                           current_mining_amount=block_data['current_mining_amount'],
+                           total_mining_amount=block_data['total_mining_amount'],
+                           block=block_data.get('block', {'nonce': '0', 'hash': '00000000000000000000000000000000'}),
+                           time_taken=block_data.get('time_taken', 0))
 
 @app.route('/latest-block')
 def latest_block():
     block = block_data.get('block', {'nonce': '0', 'hash': '00000000000000000000000000000000'})
     time_taken = block_data.get('time_taken', 0)
-    return jsonify({'nonce': block['nonce'], 'hash': block['hash'], 'time_taken': time_taken})
+    return jsonify({
+        'nonce': block['nonce'],
+        'hash': block['hash'],
+        'time_taken': time_taken,
+        'current_mining_amount': block_data['current_mining_amount'],
+        'total_mining_amount': block_data['total_mining_amount']
+    })
 
 if __name__ == '__main__':
     mining_thread = threading.Thread(target=start_mining, daemon=True)
