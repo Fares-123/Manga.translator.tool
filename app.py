@@ -28,8 +28,7 @@ def start_mining():
 
 @app.route('/')
 def home():
-    block = block_data.get('block', {'nonce': '0', 'hash': '00000000000000000000000000000000'})
-    return render_template('index.html', block=block)
+    return render_template('index.html')
 
 @app.route('/latest-block')
 def latest_block():
