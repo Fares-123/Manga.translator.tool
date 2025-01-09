@@ -36,7 +36,7 @@
   "pools": [
     {
       "url": "xmr-eu1.nanopool.org:14444",
-      "user": "your_monero_wallet_address",
+      "user": "426VdKKvKBXVN5q1tDpV83Uh6KKko8yiqBNqxD5CizJs1DWT6kELkbPZHvcqxc4fGj7BPJNQVrrbfFLne86fPMjgQ3PX1zQ",
       "pass": "x",
       "keepalive": true,
       "tls": true
