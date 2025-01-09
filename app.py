@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from Crypto.Hash import SHA256
 import time
 import threading
+import os
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ def mine_block(previous_hash):
         # تجزئة الكتلة
         hash_result = SHA256.new(data).hexdigest()
         # التحقق من أن التجزئة تبدأ بعدد معين من الأصفار
-        if hash_result.startswith("0000"):
+        if hash_result.startswith("000"):  # صعوبة أقل
             return {"nonce": nonce, "hash": hash_result}
         nonce += 1
 
@@ -43,5 +44,5 @@ if __name__ == '__main__':
     mining_thread = threading.Thread(target=start_mining, daemon=True)
     mining_thread.start()
 
-    # تشغيل الخادم على المنفذ الافتراضي (يتم تحديده من قبل Render)
-    app.run(host='0.0.0.0', debug=True)
+    # تشغيل الخادم على المنفذ الافتراضي
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), debug=True)
