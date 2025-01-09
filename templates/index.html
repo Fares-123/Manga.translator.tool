@@ -8,14 +8,21 @@
 </head>
 <body>
     <div class="container">
-        <h1>نتائج عملية التعدين</h1>
-        <div class="block-info">
-            <p><strong>Nonce:</strong> {{ block['nonce'] }}</p>
-            <p><strong>Hash:</strong> {{ block['hash'] }}</p>
-        </div>
-        <div class="time-info">
-            <p><strong>الوقت المستغرق:</strong> {{ time_taken }} ثواني</p>
-        </div>
+        <header>
+            <h1>نتائج عملية التعدين</h1>
+        </header>
+        <main>
+            <section class="block-info">
+                <p><strong>Nonce:</strong> {{ block['nonce'] }}</p>
+                <p><strong>Hash:</strong> {{ block['hash'] }}</p>
+            </section>
+            <section class="time-info">
+                <p><strong>الوقت المستغرق:</strong> {{ time_taken }} ثواني</p>
+            </section>
+        </main>
+        <footer>
+            <p>© 2025 جميع الحقوق محفوظة</p>
+        </footer>
     </div>
     <script src="static/js/script.js"></script>
 </body>
