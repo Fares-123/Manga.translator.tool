@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from Crypto.Hash import SHA256
 import time
 import threading
@@ -6,43 +6,37 @@ import os
 
 app = Flask(__name__)
 
+block_data = {}
+
 def mine_block(previous_hash):
-    """وظيفة تعدين تقوم بإنشاء كتلة جديدة"""
     nonce = 0
     while True:
-        # بيانات الكتلة
         data = f"{previous_hash}{nonce}".encode()
-        # تجزئة الكتلة
         hash_result = SHA256.new(data).hexdigest()
-        # التحقق من أن التجزئة تبدأ بعدد معين من الأصفار
-        if hash_result.startswith("000"):  # صعوبة أقل
+        if hash_result.startswith("000"): 
             return {"nonce": nonce, "hash": hash_result}
         nonce += 1
 
 def start_mining():
-    """تشغيل التعدين بشكل مستمر في الخلفية"""
-    previous_hash = "00000000000000000000000000000000"  # قيمة ثابتة لبدء التعدين
+    previous_hash = "00000000000000000000000000000000"
     while True:
         start_time = time.time()
         block = mine_block(previous_hash)
         elapsed_time = time.time() - start_time
-        print(f"Block mined: {block}, Time taken: {elapsed_time}s")
+        block_data['block'] = block
+        block_data['time_taken'] = elapsed_time
 
 @app.route('/')
 def home():
-    """المسار لعرض البيانات في الصفحة الرئيسية"""
-    previous_hash = "00000000000000000000000000000000"  # قيمة ثابتة لبدء التعدين
-    start_time = time.time()
-    block = mine_block(previous_hash)
-    elapsed_time = time.time() - start_time
-    
-    # إرسال البيانات إلى قالب HTML
-    return render_template('index.html', block=block, time_taken=elapsed_time)
+    return render_template('index.html')
+
+@app.route('/latest-block')
+def latest_block():
+    block = block_data.get('block', {'nonce': '0', 'hash': '00000000000000000000000000000000'})
+    time_taken = block_data.get('time_taken', 0)
+    return jsonify({'nonce': block['nonce'], 'hash': block['hash'], 'time_taken': time_taken})
 
 if __name__ == '__main__':
-    # بدء التعدين في الخلفية
     mining_thread = threading.Thread(target=start_mining, daemon=True)
     mining_thread.start()
-
-    # تشغيل الخادم على المنفذ الافتراضي
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), debug=True)
