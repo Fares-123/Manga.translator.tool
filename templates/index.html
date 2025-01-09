@@ -9,11 +9,9 @@
 <body>
     <div class="container">
         <h1>نتائج عملية التعدين</h1>
-        <div class="block-info">
-            <p id="nonce">Nonce: 0</p>
-            <p id="hash">Hash: 00000000000000000000000000000000</p>
-            <p id="time">Time Taken: 0 seconds</p>
-        </div>
+        <p><strong>Nonce:</strong> <span id="nonce">{{ block['nonce'] }}</span></p>
+        <p><strong>Hash:</strong> <span id="hash">{{ block['hash'] }}</span></p>
+        <p><strong>الوقت المستغرق:</strong> <span id="timeTaken">{{ time_taken }}</span> ثواني</p> 
     </div>
     <script src="static/js/script.js"></script>
 </body>
