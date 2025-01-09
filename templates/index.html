@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة التعدين</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <title>Mining App</title>
+    <!-- ربط ملف CSS -->
+    <link rel="stylesheet" href="static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>نتائج عملية التعدين</h1>
-        <p><strong>Nonce:</strong> <span id="nonce">{{ block['nonce'] }}</span></p>
-        <p><strong>Hash:</strong> <span id="hash">{{ block['hash'] }}</span></p>
-        <p><strong>الوقت المستغرق:</strong> <span id="timeTaken">{{ time_taken }}</span> ثواني</p> 
-    </div>
-    <script src="static/js/script.js"></script>
+    <h1>Mining Information</h1>
+    <p><strong>Nonce:</strong> <span id="nonce">Loading...</span></p>
+    <p><strong>Hash:</strong> <span id="hash">Loading...</span></p>
+    <p><strong>Time Taken:</strong> <span id="time_taken">Loading...</span></p>
+
+    <!-- ربط ملف JavaScript -->
+    <script src="static/js/main.js"></script>
 </body>
 </html>
